@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,7 +29,11 @@
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
+  <?php
 
+  require 'core/db.php';
+
+  ?>
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
@@ -117,7 +122,7 @@
               </p>
             </a>
           </li>
-          
+
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
