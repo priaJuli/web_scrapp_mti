@@ -80,7 +80,7 @@
     "bs-stepper": "^1.7.0",
     "chart.js": "^2.9.4",
     "codemirror": "^5.58.3",
-    "datatables.net": "^1.10.22",
+    "datatables.net": "^1.10.25",
     "datatables.net-autofill-bs4": "^2.3.5",
     "datatables.net-bs4": "^1.10.22",
     "datatables.net-buttons-bs4": "^1.6.5",
@@ -126,7 +126,7 @@
     "sweetalert2": "^10.10.2",
     "tempusdominus-bootstrap-4": "^5.39.0",
     "toastr": "^2.1.4",
-    "uplot": "^1.4.4"
+    "uplot": "^1.6.12"
   },
   "devDependencies": {
     "@babel/core": "^7.11.6",
